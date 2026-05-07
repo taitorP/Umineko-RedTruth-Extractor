@@ -73,9 +73,8 @@ try
         return;
     }
 
-    // If the section is found, get the index property and print a message
+    // If the section is found, get the index property
     string sectionIndex = sectionFound.GetProperty("index").GetString();
-    Console.WriteLine($"Found section '{requestedEpisode}' with index: {sectionIndex}");
 
     // Using the index to get the section's content as a string
     string contentUrl = $"{wikiUrl}?action=parse&page={pageTitle}&section={sectionIndex}&prop=text&format=json&formatversion=2";

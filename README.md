@@ -8,14 +8,31 @@ This tool asks for an episode from the visual novel the user wants to know the r
 
 ## Knox's 8th. It is forbidden for the case to be resolved with clues that are not PRESENTED!!
 
-- This project was made in **C# 13** and **.NET 10**
+- This project was made in **C#** (**.NET 10**)
 - **System.Text.Json** is used to manage API responses
 - **HtmlAgilityPack** is used to parse the content received, navigate through it and clean it of all the tags and the links that were not needed
 
 ## There were no tricks like that!! It was just an ordinary table and an ordinary cup!!
 
-1. Start the application
-2. Enter the name or the number of the episode you want to know the red truths of
-3. Read the red truths as they are printed out on the console
+1. Clone the repository:
+
+```bash
+    git clone https://github.com/taitorP/Umineko-RedTruth-Extractor
+```
+
+2. Navigate to the project folder:
+
+```bash
+    cd Umineko-RedTruth-Extractor
+```
+
+3. Start the application:
+
+```bash
+    dotnet run
+```
+
+4. Enter the name or the number of the episode you want to know the red truths of
+5. Read the red truths as they are printed out on the console
 
 ![Example of usage](images/red_truth.png)

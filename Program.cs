@@ -47,7 +47,7 @@ while (true)
 using HttpClient client = new HttpClient();
 
 // Presenting myself to make requests
-string myUserAgent = "RedTruthProject/1.0 (contact: pasqualebressi27@gmail.com)";
+string myUserAgent = "RedTruth-Extractor/1.0 (https://github.com/taitorP/Umineko-RedTruth-Extractor)";
 client.DefaultRequestHeaders.Add("User-Agent", myUserAgent);
 
 try

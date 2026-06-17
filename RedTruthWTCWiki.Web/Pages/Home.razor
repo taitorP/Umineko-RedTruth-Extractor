@@ -1,0 +1,109 @@
+﻿@page "/"
+@using RedTruthWeb.Services
+@inject RedTruthService RedTruthService
+
+<h1>Umineko Red Truth Extractor</h1>
+
+<div class="menu-container" style="margin-bottom: 20px;">
+    <label for="episode-select" style="color: white; margin-right: 10px;">Choose an episode:</label>
+    
+    <select id="episode-select" @bind="selectedEpisode" style="padding: 5px; border-radius: 4px; background: #222; color: white; border: 1px solid #f00;">
+        @foreach (var ep in episodes)
+        {
+            <option value="@ep">@ep</option>
+        }
+    </select>
+
+    <button @onclick="LoadTruths" class="btn btn-danger" style="margin-left: 10px;">
+        Download Red Truth
+    </button>
+</div>
+
+@if (isLoading)
+{
+    <p style="color: gold;">Loading truths from the Sea of Fragments...</p>
+}
+@if (truths != null)
+{
+    <ul>@if (truths != null && truths.Any())
+        {
+            @foreach (var entry in truths)
+            {
+                var parts = entry.Split('|');
+                var speaker = parts.Length > 0 ? parts[0] : "";
+                var prefix = parts.Length > 1 ? parts[1] : "";
+                var redTruth = parts.Length > 2 ? parts[2] : "";
+                var trailing = parts.Length > 3 ? parts[3] : "";
+
+                <p style="margin-bottom: 12px; font-family: 'Georgia', serif; line-height: 1.5;">
+                    @if (!string.IsNullOrWhiteSpace(speaker))
+                    {
+                        <span style="color: black; font-weight: bold;">@(speaker.EndsWith(":") ? speaker : speaker + ":") </span>
+                    }
+
+                    @if (!string.IsNullOrWhiteSpace(prefix))
+                    {
+                        <span style="color: black;">@prefix </span>
+                    }
+        
+                    <span style="color: rgb(224, 49, 49); font-weight: bold;">@redTruth</span>
+
+                    @if (!string.IsNullOrWhiteSpace(trailing))
+                    {
+                        <span style="color: black;">@trailing</span>
+                    }
+                </p>
+            }
+        }
+        else if (truths != null && !truths.Any() && !isLoading)
+        {
+            <div style="padding: 20px; border: 1px dashed gray; color: gray;">
+                <p><em>"In this fragment the Red Truth is yet to be discovered..."</em></p>
+                <p>(No Red Truth was found for @selectedEpisode)</p>
+            </div>
+        }
+    </ul>
+}
+
+@if (errorMessage != null)
+{
+    <p style="color:orange">State: @errorMessage</p>
+}
+
+@code {
+    private List<string>? truths;
+    private string? errorMessage;
+    private bool isLoading = false;
+    private string selectedEpisode = "Legend of the Golden Witch"; // Default value
+
+    private List<string> episodes = new()
+    {
+        "Legend of the Golden Witch",
+        "Turn of the Golden Witch",
+        "Banquet of the Golden Witch",
+        "Alliance of the Golden Witch",
+        "End of the Golden Witch",
+        "Dawn of the Golden Witch",
+        "Requiem of the Golden Witch",
+        "Twilight of the Golden Witch"
+    };
+
+    private async Task LoadTruths()
+    {
+        errorMessage = null;
+        isLoading = true;
+        try 
+        {
+            truths = await RedTruthService.GetRedTruthsAsync(selectedEpisode);
+            errorMessage = truths.Any() ? "Success!" : "No red truth was found.";
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error found: {ex.Message}";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
